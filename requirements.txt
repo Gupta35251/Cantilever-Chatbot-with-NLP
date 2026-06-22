@@ -1,0 +1,8 @@
+flask
+tensorflow
+numpy
+pandas
+nltk
+gensim
+scikit-learn
+pickle-mixin
