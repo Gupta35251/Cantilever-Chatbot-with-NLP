@@ -4,25 +4,25 @@ import pandas as pd
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-# =========================
+
 # SETTINGS
-# =========================
+
 MAX_SAMPLES = 5000
 VOCAB_SIZE = 3000
 MAX_LEN = 10
 
-# =========================
+
 # CLEAN TEXT
-# =========================
+
 def clean_text(text):
     text = text.lower()
     text = re.sub(r"[^a-zA-Z0-9?.!,]+", " ", text)
     text = text.strip()
     return text
 
-# =========================
+
 # LOAD CORNELL DATASET
-# =========================
+
 lines = {}
 
 with open(
@@ -40,9 +40,9 @@ with open(
 
             lines[line_id] = clean_text(text)
 
-# =========================
+
 # CREATE QUESTION-ANSWER PAIRS
-# =========================
+
 questions = []
 answers = []
 
@@ -83,17 +83,17 @@ with open(
                 if count >= MAX_SAMPLES:
                     break
 
-# =========================
+
 # ADD START END TOKENS
-# =========================
+
 answers = [
     "<start> " + a + " <end>"
     for a in answers
 ]
 
-# =========================
+
 # TOKENIZER
-# =========================
+
 tokenizer = Tokenizer(
     num_words=VOCAB_SIZE,
     oov_token="<OOV>"
@@ -103,9 +103,9 @@ tokenizer.fit_on_texts(
     questions + answers
 )
 
-# =========================
+
 # TEXT TO SEQUENCES
-# =========================
+
 encoder_sequences = tokenizer.texts_to_sequences(
     questions
 )
@@ -114,9 +114,9 @@ decoder_sequences = tokenizer.texts_to_sequences(
     answers
 )
 
-# =========================
+
 # PAD SEQUENCES
-# =========================
+
 encoder_input_data = pad_sequences(
     encoder_sequences,
     maxlen=MAX_LEN,
@@ -129,9 +129,9 @@ decoder_input_data = pad_sequences(
     padding="post"
 )
 
-# =========================
+
 # SAVE FILES
-# =========================
+
 with open("tokenizer.pkl", "wb") as f:
     pickle.dump(tokenizer, f)
 
